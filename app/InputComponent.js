@@ -26,14 +26,29 @@ export default class InputComponent extends React.Component {
   }
   calcularHoras() {
     let resultado = 0;
-    Alert.alert('Boton ejecutado');
+    let dias = 0;
     if(this.state.anos && this.state.horas){
-      let dias = 365 * parseInt(this.state.anos);
+      let anos = parseFloat(this.state.anos);
+      for(ano = 0; ano < anos; ano ++){
+        let fecha = new Date();
+        let anoActual = fecha.getFullYear();
+        let ano = anoActual - ano;
+        let diasAno = 0;
+        if(this.esBisiestro(ano)){
+          diasAno = 364;
+        } else {
+          diasAno = 365;
+        }
+        dias = dias + diasAno;
+      }
       resultado = parseInt(this.state.horas) * dias;
     } else {
       Alert.alert('Datos incorrectos');
     }
     this.setState({ horasTotal: resultado.toString()});
+  }
+  esBisiestro(year){
+    return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) ? true : false;
   }
   render() {
 
